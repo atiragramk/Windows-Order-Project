@@ -1,4 +1,7 @@
-const form = () => {
+import checkInputNumbers from "./checkInputNumbers";
+import { hideModal } from "./modals";
+
+const form = (state) => {
     const forms = document.querySelectorAll('form'),
           inputs = document.querySelectorAll('input'),
 
@@ -8,6 +11,7 @@ const form = () => {
             failure: 'Что-то пошло не так'
           };
 
+    checkInputNumbers('[name="user_phone"]');
 
     const postData = async (url, data) => {
         document.querySelector('.status').textContent = message.loading;
@@ -33,10 +37,15 @@ const form = () => {
             item.appendChild(status);
 
             const formData = new FormData(item); 
+            if (item.getAttribute('data-calc') === "end") {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
             
             postData('assets/server.php', formData)
                 .then (res => {
-                    console.log();
+                    console.log(res);
                     status.textContent = message.success;
                 })
                 .catch (() => status.textContent = message.failure)
@@ -45,8 +54,15 @@ const form = () => {
                     setTimeout (() => {
                         status.remove();
                     }, 5000);
+                    for (const prop of Object.getOwnPropertyNames(state)) {
+                        delete state[prop];
+                    }           
+                    if (item.getAttribute('data-calc') === "end") {
+                        setTimeout(() => {
+                            hideModal('.popup_calc_end');
+                        },2000);
+                    }
                 });
-            
         });
     });
 };
