@@ -18880,7 +18880,7 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.decoration_slider', '.no_click', '.decoration_content > div > div', 'after_click');
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState);
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img > img', 'do_image_more', 'inline-block');
-  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_4__["default"])('.timer1', '2022-02-17');
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_4__["default"])('.timer1', '2022-02-03');
   Object(_modules_images__WEBPACK_IMPORTED_MODULE_6__["default"])();
 });
 
@@ -19170,7 +19170,8 @@ var images = function images() {
   var imgArea = document.querySelector('.works'),
       bigImg = document.createElement('img'),
       imgPopup = document.createElement('div');
-  imgPopup.classList.add('popup_img');
+  imgPopup.classList.add('popup_img', 'fadeIn');
+  imgPopup.style.animationDuration = "0.3s";
   bigImg.classList.add('myimage');
   imgArea.appendChild(imgPopup);
   imgPopup.appendChild(bigImg);
@@ -19181,6 +19182,7 @@ var images = function images() {
       bigImg.src = e.target.parentNode.href;
       imgPopup.style.display = "flex";
       document.body.classList.add('modal-open');
+      document.body.style.marginRight = "".concat(Object(_modals__WEBPACK_IMPORTED_MODULE_0__["calcScroll"])(), "px");
     }
 
     imgPopup.addEventListener('click', function () {
@@ -19197,13 +19199,14 @@ var images = function images() {
 /*!**********************************!*\
   !*** ./src/js/modules/modals.js ***!
   \**********************************/
-/*! exports provided: showModal, hideModal, default */
+/*! exports provided: showModal, hideModal, calcScroll, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showModal", function() { return showModal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hideModal", function() { return hideModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "calcScroll", function() { return calcScroll; });
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
 /* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
 
@@ -19270,6 +19273,7 @@ var modals = function modals() {
         });
         modal.style.display = "none";
         document.body.classList.remove('modal-open');
+        document.body.style.marginRight = "0px";
       });
     });
     modal.addEventListener('click', function (e) {
@@ -19279,6 +19283,7 @@ var modals = function modals() {
         });
         modal.style.display = "none";
         document.body.classList.remove('modal-open');
+        document.body.style.marginRight = "0px";
       }
     });
   }
@@ -19294,12 +19299,26 @@ function showModal(modalSelector) {
   var modal = document.querySelector(modalSelector);
   modal.style.display = "block";
   document.body.classList.add('modal-open');
+  document.body.style.marginRight = "".concat(calcScroll(), "px");
 }
 
 function hideModal(modalSelector) {
   var modal = document.querySelector(modalSelector);
   modal.style.display = "none";
   document.body.classList.remove('modal-open');
+  document.body.style.marginRight = "0px";
+}
+
+function calcScroll() {
+  var elem = document.createElement('div');
+  elem.style.width = "50px";
+  elem.style.height = "50px";
+  elem.style.overflowY = "scroll";
+  elem.style.visibility = "hidden";
+  document.body.appendChild(elem);
+  var scroll = elem.offsetWidth - elem.clientWidth;
+  elem.remove();
+  return scroll;
 }
 
 
@@ -19415,6 +19434,10 @@ var timer = function timer(timerSelector, deadline) {
 
       if (t.total <= 0) {
         clearInterval(timeInterval);
+        days.textContent = "00";
+        hours.textContent = "00";
+        minutes.textContent = "00";
+        seconds.textContent = "00";
       }
     }
   }

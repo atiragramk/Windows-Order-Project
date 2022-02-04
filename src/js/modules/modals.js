@@ -67,6 +67,7 @@ const modals = () => {
                 });
                 modal.style.display = "none";
                 document.body.classList.remove('modal-open');
+                document.body.style.marginRight = `0px`;
             });
         });
 
@@ -77,6 +78,7 @@ const modals = () => {
                 });
                 modal.style.display = "none"; 
                 document.body.classList.remove('modal-open');
+                document.body.style.marginRight = `0px`;
             }
         });
        
@@ -94,14 +96,28 @@ function showModal(modalSelector) {
     const modal = document.querySelector (modalSelector);
     modal.style.display = "block";
     document.body.classList.add('modal-open');
+    document.body.style.marginRight = `${calcScroll()}px`;
 }
 
 function hideModal(modalSelector) {
     const modal = document.querySelector (modalSelector);
     modal.style.display = "none";
     document.body.classList.remove('modal-open');
+    document.body.style.marginRight = `0px`;
 }
 
+function calcScroll () {
+    let elem = document.createElement('div');
+    elem.style.width = "50px";
+    elem.style.height = "50px";
+    elem.style.overflowY = "scroll";
+    elem.style.visibility = "hidden";
+    document.body.appendChild(elem);
+    let scroll = elem.offsetWidth - elem.clientWidth;
+    elem.remove();
 
-export {showModal, hideModal};
+    return scroll;
+}
+
+export {showModal, hideModal, calcScroll};
 export default modals;

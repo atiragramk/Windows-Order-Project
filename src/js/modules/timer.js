@@ -46,6 +46,10 @@ const timer = (timerSelector, deadline) => {
 
                   if (t.total <= 0) {
                       clearInterval(timeInterval);
+                      days.textContent = "00";
+                      hours.textContent = "00"; 
+                      minutes.textContent = "00";
+                      seconds.textContent = "00";
                   }
               }
     }     
